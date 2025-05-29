@@ -75,32 +75,12 @@
       margin: 20px 0;
       text-align: center;
     }
-    .timeline-filters .filter-button {
-      margin: 0 10px;
-    }
-    .close-timeline {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #e74c3c;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .close-timeline:hover {
-      background: #c0392b;
-    }
-    .session.selected {
-      background: #f1f9ff;
-    }
-    .filter-buttons {
+    .timeline-filters .filter-buttons {
       display: flex;
       justify-content: center;
       gap: 10px;
-      margin: 20px 0;
       flex-wrap: wrap;
+      margin: 20px 0;
     }
     .filter-button {
       padding: 8px 16px;
@@ -142,6 +122,30 @@
     .track.hidden {
       display: none;
     }
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .close-timeline {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .close-timeline:hover {
+      background: #c0392b;
+    }
+    .session.selected {
+      background: #f1f9ff;
+    }
   </style>
 </head>
 <body>
@@ -151,11 +155,13 @@
     <div class="timeline-content">
       <h1>Mój Timeline</h1>
       <div class="timeline-filters">
-        <button class="filter-button all active" onclick="toggleTimelineFilter('all')">Wszystkie</button>
-        <button class="filter-button IT" onclick="toggleTimelineFilter('IT')">IT</button>
-        <button class="filter-button Unplugged" onclick="toggleTimelineFilter('Unplugged')">Unplugged</button>
-        <button class="filter-button Panel" onclick="toggleTimelineFilter('Panel')">Panel</button>
-        <button class="filter-button Networking" onclick="toggleTimelineFilter('Networking')">Networking</button>
+        <div class="filter-buttons">
+          <button class="filter-button all active" onclick="toggleTimelineFilter('all')">Wszystkie</button>
+          <button class="filter-button IT" onclick="toggleTimelineFilter('IT')">IT</button>
+          <button class="filter-button Unplugged" onclick="toggleTimelineFilter('Unplugged')">Unplugged</button>
+          <button class="filter-button Panel" onclick="toggleTimelineFilter('Panel')">Panel</button>
+          <button class="filter-button Networking" onclick="toggleTimelineFilter('Networking')">Networking</button>
+        </div>
       </div>
       <div id="personalTimeline"></div>
     </div>
