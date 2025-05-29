@@ -71,6 +71,10 @@
       padding: 20px;
       border-radius: 8px;
     }
+    .timeline-filters {
+      margin: 20px 0;
+      text-align: center;
+    }
     .close-timeline {
       position: fixed;
       top: 20px;
@@ -88,6 +92,53 @@
     .session.selected {
       background: #f1f9ff;
     }
+    .filter-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .filter-button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      opacity: 0.7;
+    }
+    .filter-button.active {
+      transform: scale(1.05);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      opacity: 1;
+    }
+    .filter-button.IT {
+      background: #2980b9;
+      color: white;
+    }
+    .filter-button.Unplugged {
+      background: #e67e22;
+      color: white;
+    }
+    .filter-button.Panel {
+      background: #9b59b6;
+      color: white;
+    }
+    .filter-button.Networking {
+      background: #16a085;
+      color: white;
+    }
+    .filter-button.all {
+      background: #34495e;
+      color: white;
+    }
+    .session.hidden {
+      display: none;
+    }
+    .track.hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -96,6 +147,13 @@
   <div class="timeline-view" id="timelineView">
     <div class="timeline-content">
       <h1>Mój Timeline</h1>
+      <div class="timeline-filters">
+        <button class="filter-button all active" onclick="toggleTimelineFilter('all')">Wszystkie</button>
+        <button class="filter-button IT" onclick="toggleTimelineFilter('IT')">IT</button>
+        <button class="filter-button Unplugged" onclick="toggleTimelineFilter('Unplugged')">Unplugged</button>
+        <button class="filter-button Panel" onclick="toggleTimelineFilter('Panel')">Panel</button>
+        <button class="filter-button Networking" onclick="toggleTimelineFilter('Networking')">Networking</button>
+      </div>
       <div id="personalTimeline"></div>
     </div>
     <button class="close-timeline" onclick="toggleTimeline()">Zamknij</button>
@@ -104,18 +162,30 @@
   <h1>Agenda Konferencji IT Unplugged – 10 czerwca 2025</h1>
   <p style="text-align:center;">Centrum Spotkania Kultur w Lublinie</p>
 
+  <div class="filter-buttons">
+    <button class="filter-button all active" onclick="toggleFilter('all')">Wszystkie</button>
+    <button class="filter-button IT" onclick="toggleFilter('IT')">IT</button>
+    <button class="filter-button Unplugged" onclick="toggleFilter('Unplugged')">Unplugged</button>
+    <button class="filter-button Panel" onclick="toggleFilter('Panel')">Panel</button>
+    <button class="filter-button Networking" onclick="toggleFilter('Networking')">Networking</button>
+  </div>
+
   <div class="track">
-    <h2>09:00 - 10:05</h2>
+    <h2>09:00 - 09:20</h2>
     <div class="session">
       <span class="time">09:00 - 09:20</span>
       <span class="room">Sala Operowa</span>
-      <strong>Otwarcie konferencji</strong>
+      <strong>Otwarcie</strong>
     </div>
-    <div class="session IT">
+  </div>
+
+  <div class="track">
+    <h2>09:20 - 10:05</h2>
+    <div class="session Unplugged">
       <span class="time">09:20 - 10:05</span>
       <span class="room">Sala Operowa</span>
       <strong>Czy maszyny mogą myśleć?</strong> – prof. Andrzej Dragan
-      <span class="type">IT</span>
+      <span class="type">Unplugged</span>
     </div>
   </div>
 
@@ -133,16 +203,17 @@
       <strong>Czego można nauczyć się od Go?</strong> – Grzegorz Piwowarek
       <span class="type">IT</span>
     </div>
-    <div class="session Unplugged">
+    <div class="session IT">
       <span class="time">10:05 - 10:40</span>
       <span class="room">Sala Klub Muzyczny</span>
       <strong>Czego mama nie powiedziała ci o DDD na froncie?</strong> – Tomasz Ducin
-      <span class="type">Unplugged</span>
+      <span class="type">IT</span>
     </div>
-    <div class="session">
+    <div class="session Unplugged">
       <span class="time">10:05 - 10:40</span>
       <span class="room">Sala Operowa</span>
-      <strong>Działania w sytuacjach kryzysowych. Czy jesteś gotowy na blackout?</strong> – Paweł "Szlendi" Szlendak
+      <strong>Działania w sytuacjach kryzysowych</strong> – Paweł "Szlendi" Szlendak
+      <span class="type">Unplugged</span>
     </div>
   </div>
 
@@ -157,243 +228,292 @@
   </div>
 
   <div class="track">
-  <h2>10:50 - 11:40</h2>
-  <div class="session Networking">
-    <span class="time">10:50 - 11:40</span>
-    <span class="room">Foyer Sali Operowej</span>
-    <strong>Moderowany Business Speed Dating: Biznesowy Sprint 360!</strong>
-    <span class="type">Networking</span>
+    <h2>10:50 - 11:40</h2>
+    <div class="session IT">
+      <span class="time">10:50 - 11:40</span>
+      <span class="room">Foyer Sali Operowej</span>
+      <strong>Business Speed Dating: Biznesowy Sprint 360!</strong>
+      <span class="type">Business Networking</span>
+    </div>
+    <div class="session IT">
+      <span class="time">10:50 - 11:25</span>
+      <span class="room">Sala Kameralna</span>
+      <strong>Put AI to modern work</strong> – Marcin Bielecki, Paweł Rafalski, Kamil Jonak
+      <span class="type">IT</span>
+    </div>
+    <div class="session IT">
+      <span class="time">10:50 - 11:25</span>
+      <span class="room">Sala Kinowa</span>
+      <strong>Czym są archetypy i dlaczego warto je znać?</strong> – Jakub Pilimon
+      <span class="type">IT</span>
+    </div>
+    <div class="session IT">
+      <span class="time">10:50 - 11:25</span>
+      <span class="room">Sala Klub Muzyczny</span>
+      <strong>Zaawansowane wzorce projektowe dla AI</strong>
+      <span class="type">IT</span>
+    </div>
+    <div class="session Unplugged">
+      <span class="time">10:50 - 11:25</span>
+      <span class="room">Sala Operowa</span>
+      <strong>Global Teams, Local Failures</strong> – Piotr Kawęcki
+      <span class="type">Unplugged</span>
+    </div>
   </div>
-  <div class="session IT">
-    <span class="time">10:50 - 11:25</span>
-    <span class="room">Sala Kameralna</span>
-    <strong>Put AI to modern work.</strong> – Marcin Bielecki, Paweł Rafalski, Kamil Jonak
-    <span class="type">IT</span>
-  </div>
-  <div class="session IT">
-    <span class="time">10:50 - 11:25</span>
-    <span class="room">Sala Kinowa</span>
-    <strong>Czym są archetypy i dlaczego warto je znać?</strong> – Jakub Pilimon
-    <span class="type">IT</span>
-  </div>
-  <div class="session Unplugged">
-    <span class="time">10:50 - 11:25</span>
-    <span class="room">Sala Klub Muzyczny</span>
-    <strong>Zaawansowane wzorce projektowe dla skalowalnych systemów AI w chmurze.</strong>
-    <span class="type">Unplugged</span>
-  </div>
-  <div class="session">
-    <span class="time">10:50 - 11:25</span>
-    <span class="room">Sala Operowa</span>
-    <strong>Global Teams, Local Failures.</strong> – Piotr Kawęcki, Hubert Puacz
-  </div>
-</div>
 
-<div class="track">
-  <h2>11:00 - 12:00</h2>
-  <div class="session Panel">
-    <span class="time">11:00 - 12:00</span>
-    <span class="room">Sala VIP I</span>
-    <strong>Q&A prof. Andrzej Dragan</strong>
-    <span class="type">VIP GOLD</span>
+  <div class="track">
+    <h2>11:00 - 12:00</h2>
+    <div class="session Panel">
+      <span class="time">11:00 - 12:00</span>
+      <span class="room">Sala VIP I</span>
+      <strong>Q&A prof. Andrzej Dragan</strong>
+      <span class="type">Meetup Q&A VIP GOLD</span>
+    </div>
+    <div class="session Panel">
+      <span class="time">11:00 - 12:00</span>
+      <span class="room">Sala VIP II</span>
+      <strong>Q&A Krzysztof Hołowczyc</strong>
+      <span class="type">Meetup Q&A VIP GOLD</span>
+    </div>
   </div>
-  <div class="session Panel">
-    <span class="time">11:00 - 12:00</span>
-    <span class="room">Sala VIP II</span>
-    <strong>Q&A Krzysztof Hołowczyc</strong>
-    <span class="type">VIP GOLD</span>
-  </div>
-</div>
 
-<div class="track">
-  <h2>11:25 - 12:00</h2>
-  <div class="session Unplugged">
-    <span class="time">11:25 - 12:00</span>
-    <span class="room">Sala Kameralna</span>
-    <strong>Praca Głęboka (deep work) – jak osiągnąć stan laserowego skupienia</strong> – Dorota Filipiuk
-    <span class="type">Unplugged</span>
+  <div class="track">
+    <h2>11:25 - 12:00</h2>
+    <div class="session Unplugged">
+      <span class="time">11:25 - 12:00</span>
+      <span class="room">Sala Kameralna</span>
+      <strong>Praca Głęboka</strong> – Dorota Filipiuk
+      <span class="type">Unplugged</span>
+    </div>
+    <div class="session IT">
+      <span class="time">11:25 - 12:00</span>
+      <span class="room">Sala Kinowa</span>
+      <strong>Uprość swoją architekturę</strong> – Jakub Nabrdalik
+      <span class="type">IT</span>
+    </div>
+    <div class="session Unplugged">
+      <span class="time">11:25 - 12:00</span>
+      <span class="room">Sala Klub Muzyczny</span>
+      <strong>LCP: Wyprawa bez mapy</strong> – Adam Bar
+      <span class="type">Unplugged</span>
+    </div>
+    <div class="session Unplugged">
+      <span class="time">11:25 - 12:00</span>
+      <span class="room">Sala Operowa</span>
+      <strong>Przepis na szczęście w erze cyfrowej</strong> – dr Maciej Dębski
+      <span class="type">Unplugged</span>
+    </div>
   </div>
-  <div class="session IT">
-    <span class="time">11:25 - 12:00</span>
-    <span class="room">Sala Kinowa</span>
-    <strong>Uprość swoją architekturę.</strong> – Jakub Nabrdalik
-    <span class="type">IT</span>
-  </div>
-  <div class="session Unplugged">
-    <span class="time">11:25 - 12:00</span>
-    <span class="room">Sala Klub Muzyczny</span>
-    <strong>LCP: Wyprawa bez mapy ku wydajności webowej.</strong> – Adam Bar
-    <span class="type">Unplugged</span>
-  </div>
-  <div class="session Unplugged">
-    <span class="time">11:25 - 12:00</span>
-    <span class="room">Sala Operowa</span>
-    <strong>Przepis na szczęście w erze cyfrowej.</strong> – dr Maciej Dębski
-    <span class="type">Unplugged</span>
-  </div>
-</div>
 
-<div class="track">
-  <h2>12:10 - 13:00</h2>
-  <div class="session IT">
-    <span class="time">12:10 - 12:45</span>
-    <span class="room">Sala Kameralna</span>
-    <strong>Bezpieczeństwo danych w czasach Generative AI.</strong> – Patryk Omiotek
-    <span class="type">IT</span>
+  <div class="track">
+    <h2>12:10 - 13:00</h2>
+    <div class="session IT">
+      <span class="time">12:10 - 12:45</span>
+      <span class="room">Sala Kameralna</span>
+      <strong>Bezpieczeństwo danych w Generative AI</strong> – Patryk Omiotek
+      <span class="type">IT</span>
+    </div>
+    <div class="session IT">
+      <span class="time">12:10 - 12:45</span>
+      <span class="room">Sala Kinowa</span>
+      <strong>To RAG or not to RAG?</strong> – Piotr Przybył
+      <span class="type">IT</span>
+    </div>
+    <div class="session Unplugged">
+      <span class="time">12:10 - 12:45</span>
+      <span class="room">Sala Klub Muzyczny</span>
+      <strong>Projektuj role, nie obiekty</strong> – Damian Płaza
+      <span class="type">Unplugged</span>
+    </div>
+    <div class="session Unplugged">
+      <span class="time">12:10 - 13:00</span>
+      <span class="room">Sala Operowa</span>
+      <strong>Sztuka Decyzji</strong> – Krzysztof Hołowczyc
+      <span class="type">Unplugged</span>
+    </div>
   </div>
-  <div class="session IT">
-    <span class="time">12:10 - 12:45</span>
-    <span class="room">Sala Kinowa</span>
-    <strong>To RAG or not to RAG?</strong> – Piotr Przybył
-    <span class="type">IT</span>
-  </div>
-  <div class="session Unplugged">
-    <span class="time">12:10 - 12:45</span>
-    <span class="room">Sala Klub Muzyczny</span>
-    <strong>Projektuj role, nie obiekty</strong> – Damian Płaza
-    <span class="type">Unplugged</span>
-  </div>
-  <div class="session Unplugged">
-    <span class="time">12:10 - 13:00</span>
-    <span class="room">Sala Operowa</span>
-    <strong>Sztuka Decyzji – Jak radzić sobie z wyzwaniami w ekstremalnych warunkach?</strong> – Krzysztof Hołowczyc
-    <span class="type">Unplugged</span>
-  </div>
-</div>
 
-<div class="track">
-  <h2>13:30 - 14:05</h2>
-  <div class="session Unplugged">
-    <span class="time">13:30 - 14:05</span>
-    <span class="room">Sala Kameralna</span>
-    <strong>Po co Ci AI? Czyli kiedy nie uczyć modelu, by automatyzować biznes.</strong> – Przemysław Kusaj
-    <span class="type">Unplugged</span>
+  <div class="track">
+    <h2>12:45 - 13:20</h2>
+    <div class="session IT">
+      <span class="time">12:45 - 13:20</span>
+      <span class="room">Sala Kameralna</span>
+      <strong>Subiektywnie o liderach w IT</strong> – Anita Przybył
+      <span class="type">IT</span>
+    </div>
+    <div class="session IT">
+      <span class="time">12:45 - 13:20</span>
+      <span class="room">Sala Klub Muzyczny</span>
+      <strong>Kradzież wizerunku w erze AI</strong> – Amanda Krać-Batyra, Tomasz Sidor
+      <span class="type">IT</span>
+    </div>
   </div>
-  <div class="session IT">
-    <span class="time">13:30 - 14:05</span>
-    <span class="room">Sala Kinowa</span>
-    <strong>Narzędzia wysoko wydajnych zespołów.</strong> – Bartłomiej Słota
-    <span class="type">IT</span>
-  </div>
-  <div class="session IT">
-    <span class="time">13:30 - 14:05</span>
-    <span class="room">Sala Klub Muzyczny</span>
-    <strong>Mikro frontendy w istniejących produktach cyfrowych.</strong> – Sebastian Gos
-    <span class="type">IT</span>
-  </div>
-  <div class="session Unplugged">
-    <span class="time">13:30 - 14:05</span>
-    <span class="room">Sala Operowa</span>
-    <strong>Lider i jego zespół otoczeni technologią – kluczowe kompetencje przywódcze na dziś i na jutro.</strong> – Robert Bronisz
-    <span class="type">Unplugged</span>
-  </div>
-</div>
 
-<div class="track">
-  <h2>14:05 - 14:55</h2>
-  <div class="session IT">
-    <span class="time">14:05 - 14:55</span>
-    <span class="room">Sala Kameralna</span>
-    <strong>Krótki kurs myślenia biznesowego dla inżynierów i inżynierek.</strong> – Michał Bartyzel
-    <span class="type">IT</span>
+  <div class="track">
+    <h2>13:30 - 14:05</h2>
+    <div class="session Networking">
+      <span class="time">13:30 - 13:50</span>
+      <span class="room">Foyer Sali Operowej</span>
+      <strong>Meet & Greet z Krzysztofem Hołowczycem</strong>
+      <span class="type">Business Networking</span>
+    </div>
+    <div class="session Unplugged">
+      <span class="time">13:30 - 14:05</span>
+      <span class="room">Sala Kameralna</span>
+      <strong>Po co Ci AI?</strong> – Przemysław Kusaj
+      <span class="type">Unplugged</span>
+    </div>
+    <div class="session IT">
+      <span class="time">13:30 - 14:05</span>
+      <span class="room">Sala Kinowa</span>
+      <strong>Narzędzia wysoko wydajnych zespołów</strong> – Bartłomiej Słota
+      <span class="type">IT</span>
+    </div>
+    <div class="session IT">
+      <span class="time">13:30 - 14:05</span>
+      <span class="room">Sala Klub Muzyczny</span>
+      <strong>Mikro frontendy</strong> – Sebastian Gos
+      <span class="type">IT</span>
+    </div>
+    <div class="session IT">
+      <span class="time">13:30 - 14:05</span>
+      <span class="room">Sala Operowa</span>
+      <strong>Lider i jego zespół</strong> – Robert Bronisz
+      <span class="type">IT</span>
+    </div>
   </div>
-  <div class="session Unplugged">
-    <span class="time">14:05 - 14:55</span>
-    <span class="room">Sala Klub Muzyczny</span>
-    <strong>Backend development bez magii (dla frontend deweloperów).</strong> – Mateusz Kwaśniewski
-    <span class="type">Unplugged</span>
-  </div>
-  <div class="session Panel">
-    <span class="time">14:05 - 14:55</span>
-    <span class="room">Sala Operowa</span>
-    <strong>Cyberbezpieczeństwo 2.0: Wyzwania, zagrożenia i przyszłość w erze cyfrowej rewolucji.</strong> – Panel: Jacek Bartosiak, Piotr Konieczny, Paweł Bernacik, Andrzej Karpiński
-    <span class="type">Panel</span>
-  </div>
-</div>
 
-<div class="track">
-  <h2>15:05 - 15:35</h2>
-  <div class="session IT">
-    <span class="time">15:05 - 15:35</span>
-    <span class="room">Sala Kameralna</span>
-    <strong>Polowanie na programistów: 3 historie, które każdy geek znać musi.</strong> – Andrzej Dyjak
-    <span class="type">IT</span>
+  <div class="track">
+    <h2>14:05 - 14:55</h2>
+    <div class="session IT">
+      <span class="time">14:05 - 14:55</span>
+      <span class="room">Sala Kameralna</span>
+      <strong>Myślenie biznesowe dla inżynierów</strong> – Michał Bartyzel
+      <span class="type">IT</span>
+    </div>
+    <div class="session Unplugged">
+      <span class="time">14:05 - 14:55</span>
+      <span class="room">Sala Klub Muzyczny</span>
+      <strong>Backend development dla frontendów</strong> – Mateusz Kwaśniewski
+      <span class="type">IT</span>
+    </div>
+    <div class="session IT">
+      <span class="time">14:05 - 14:55</span>
+      <span class="room">Sala Operowa</span>
+      <strong>Cyberbezpieczeństwo 2.0</strong> – Panel: Jacek Bartosiak, Piotr Konieczny, Paweł Bernacik, Andrzej Karpiński
+      <span class="type">IT</span>
+    </div>
   </div>
-  <div class="session IT">
-    <span class="time">15:05 - 15:35</span>
-    <span class="room">Sala Kinowa</span>
-    <strong>Dlaczego dostarczamy wolno i co z tym zrobić?</strong> – Łukasz Szydło
-    <span class="type">IT</span>
-  </div>
-  <div class="session Unplugged">
-    <span class="time">15:05 - 15:40</span>
-    <span class="room">Sala Klub Muzyczny</span>
-    <strong>Pożyczki na cyfryzację z Krajowego Planu Odbudowy i Rozwoju.</strong> – Michał Kopeć
-    <span class="type">Unplugged</span>
-  </div>
-  <div class="session Unplugged">
-    <span class="time">15:05 - 15:35</span>
-    <span class="room">Sala Operowa</span>
-    <strong>Longevity – medycyna stylu życia 3.0 i nowy fundament zdrowia i biznesu.</strong> – Michał Lachowicz
-    <span class="type">Unplugged</span>
-  </div>
-</div>
 
-<div class="track">
-  <h2>15:35 - 16:10</h2>
-  <div class="session IT">
-    <span class="time">15:35 - 16:10</span>
-    <span class="room">Sala Kameralna</span>
-    <strong>Od wizji do działania – jak zespoły i firmy mogą wygrywać w świecie bez pewników?</strong> – Jakub Szczepanik
-    <span class="type">IT</span>
+  <div class="track">
+    <h2>15:05 - 15:40</h2>
+    <div class="session Networking">
+      <span class="time">15:05 - 15:25</span>
+      <span class="room">Foyer Sali Operowej</span>
+      <strong>Meet & Greet z Piotrem Koniecznym i Jackiem Bartosiakiem</strong>
+      <span class="type">Business Networking</span>
+    </div>
+    <div class="session IT">
+      <span class="time">15:05 - 15:35</span>
+      <span class="room">Sala Kameralna</span>
+      <strong>Polowanie na programistów</strong> – Andrzej Dyjak
+      <span class="type">IT</span>
+    </div>
+    <div class="session IT">
+      <span class="time">15:05 - 15:35</span>
+      <span class="room">Sala Kinowa</span>
+      <strong>Dlaczego dostarczamy wolno</strong> – Łukasz Szydło
+      <span class="type">IT</span>
+    </div>
+    <div class="session Unplugged">
+      <span class="time">15:05 - 15:40</span>
+      <span class="room">Sala Klub Muzyczny</span>
+      <strong>Pożyczki na cyfryzację</strong> – Michał Kopeć
+      <span class="type">Unplugged</span>
+    </div>
+    <div class="session Networking">
+      <span class="time">15:05 - 15:35</span>
+      <span class="room">Sala Operowa</span>
+      <strong>Longevity</strong> – Michał Lachowicz
+      <span class="type">Business Networking</span>
+    </div>
   </div>
-  <div class="session IT">
-    <span class="time">15:35 - 16:10</span>
-    <span class="room">Sala Kinowa</span>
-    <strong>Wydajna, krytyczna ścieżka renderowania frontendu.</strong> – Bartek Miś
-    <span class="type">IT</span>
-  </div>
-  <div class="session Unplugged">
-    <span class="time">15:35 - 16:10</span>
-    <span class="room">Sala Klub Muzyczny</span>
-    <strong>Bullshido – dlaczego Agile nie działa pomiędzy zespołami – spojrzenie z perspektywy technicznej.</strong> – Sławomir Sobótka
-    <span class="type">Unplugged</span>
-  </div>
-  <div class="session Unplugged">
-    <span class="time">15:35 - 16:10</span>
-    <span class="room">Sala Operowa</span>
-    <strong>AgeTech i Silver Economy: przyszłość, która już trwa.</strong> – Bernard Gołko
-    <span class="type">Unplugged</span>
-  </div>
-</div>
 
-<div class="track">
-  <h2>16:20 - 17:10</h2>
-  <div class="session IT">
-    <span class="time">16:20 - 17:10</span>
-    <span class="room">Sala Kameralna</span>
-    <strong>Synergia GitOps i potoków CI/CD.</strong> – Tomasz Cholewa, Jacek Bartosiak
-    <span class="type">IT</span>
+  <div class="track">
+    <h2>15:30 - 19:00</h2>
+    <div class="session Networking">
+      <span class="time">15:30 - 19:00</span>
+      <span class="room">Sala VIP I</span>
+      <strong>SoDA Open: Lublin @ IT Unplugged</strong>
+      <span class="type">Business Networking</span>
+    </div>
   </div>
-  <div class="session IT">
-    <span class="time">16:20 - 17:10</span>
-    <span class="room">Sala Kinowa</span>
-    <strong>Tech Lead 2.0 – jak GenAI zmienia zasady gry?</strong> – Radek Maziarka
-    <span class="type">IT</span>
+
+  <div class="track">
+    <h2>15:35 - 16:10</h2>
+    <div class="session IT">
+      <span class="time">15:35 - 16:10</span>
+      <span class="room">Sala Kameralna</span>
+      <strong>Od wizji do działania</strong> – Jakub Szczepanik
+      <span class="type">IT</span>
+    </div>
+    <div class="session IT">
+      <span class="time">15:35 - 16:10</span>
+      <span class="room">Sala Kinowa</span>
+      <strong>Renderowanie frontendu</strong> – Bartek Miś
+      <span class="type">IT</span>
+    </div>
+    <div class="session Unplugged">
+      <span class="time">15:35 - 16:10</span>
+      <span class="room">Sala Klub Muzyczny</span>
+      <strong>Bullshido i Agile</strong> – Sławomir Sobótka
+      <span class="type">Unplugged</span>
+    </div>
+    <div class="session Unplugged">
+      <span class="time">15:35 - 16:10</span>
+      <span class="room">Sala Operowa</span>
+      <strong>AgeTech i Silver Economy</strong> – Bernard Gołko
+      <span class="type">Unplugged</span>
+    </div>
   </div>
-  <div class="session IT">
-    <span class="time">16:20 - 17:10</span>
-    <span class="room">Sala Klub Muzyczny</span>
-    <strong>Model As Code: Nowoczesne podejście do modelowania oprogramowania.</strong> – Kamil Grzybek
-    <span class="type">IT</span>
+
+  <div class="track">
+    <h2>15:50 - 16:50</h2>
+    <div class="session Panel">
+      <span class="time">15:50 - 16:50</span>
+      <span class="room">Sala VIP II</span>
+      <strong>Q&A Jacek Bartosiak</strong>
+      <span class="type">Meetup Q&A VIP GOLD</span>
+    </div>
   </div>
-  <div class="session Panel">
-    <span class="time">16:20 - 17:10</span>
-    <span class="room">Sala Operowa</span>
-    <strong>AI: Od marzeń do rzeczywistości – Co potrafi dzisiaj?</strong> – Panel: Dawid Myśliwiec, Sławomir Sobótka, Adam Kuzdraliński, Rafał Garbacz, Michał Stanisławek
-    <span class="type">Panel</span>
+
+  <div class="track">
+    <h2>16:20 - 17:10</h2>
+    <div class="session IT">
+      <span class="time">16:20 - 17:10</span>
+      <span class="room">Sala Kameralna</span>
+      <strong>GitOps i CI/CD</strong> – Jacek Bartosiak, Tomasz Cholewa
+      <span class="type">IT</span>
+    </div>
+    <div class="session IT">
+      <span class="time">16:20 - 17:10</span>
+      <span class="room">Sala Kinowa</span>
+      <strong>Tech Lead 2.0</strong> – Radek Maziarka
+      <span class="type">IT</span>
+    </div>
+    <div class="session Unplugged">
+      <span class="time">16:20 - 17:10</span>
+      <span class="room">Sala Klub Muzyczny</span>
+      <strong>Model As Code</strong> – Kamil Grzybek
+      <span class="type">Unplugged</span>
+    </div>
+    <div class="session Unplugged">
+      <span class="time">16:20 - 17:10</span>
+      <span class="room">Sala Operowa</span>
+      <strong>AI: Od marzeń do rzeczywistości</strong> – Panel: Dawid Myśliwiec, Sławomir Sobótka, Adam Kuzdraliński, Rafał Garbacz, Michał Stanisławek
+      <span class="type">Unplugged</span>
+    </div>
   </div>
-</div>
 
   <div class="track">
     <h2>17:35 - 21:00</h2>
@@ -401,7 +521,7 @@
       <span class="time">17:35 - 21:00</span>
       <span class="room">Foyer Sali Operowej</span>
       <strong>Afterparty</strong>
-      <span class="type">Networking</span>
+      <span class="type">Business Networking</span>
     </div>
   </div>
 
@@ -410,58 +530,43 @@
   <script>
     // Initialize timeline from localStorage
     let personalTimeline = JSON.parse(localStorage.getItem('personalTimeline')) || [];
+    let activeFilters = new Set(['all']);
+    let activeTimelineFilters = new Set(['all']);
     
-    // Function to toggle timeline view
-    function toggleTimeline() {
-      const timelineView = document.getElementById('timelineView');
-      timelineView.classList.toggle('active');
-      if (timelineView.classList.contains('active')) {
-        renderPersonalTimeline();
-      }
-    }
-
-    // Function to add/remove session from timeline
-    function toggleSession(sessionId, button) {
-      const session = document.querySelector(`[data-session-id="${sessionId}"]`);
-      const index = personalTimeline.indexOf(sessionId);
+    // Function to toggle timeline filters
+    function toggleTimelineFilter(type) {
+      const button = document.querySelector(`#timelineView .filter-button.${type}`);
       
-      if (index === -1) {
-        personalTimeline.push(sessionId);
-        button.classList.add('selected');
-        button.textContent = 'Usuń z timeline';
-        session.classList.add('selected');
+      if (type === 'all') {
+        // Reset all filters
+        activeTimelineFilters.clear();
+        activeTimelineFilters.add('all');
+        document.querySelectorAll('#timelineView .filter-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        button.classList.add('active');
       } else {
-        personalTimeline.splice(index, 1);
-        button.classList.remove('selected');
-        button.textContent = 'Dodaj do timeline';
-        session.classList.remove('selected');
+        // Remove 'all' from active filters
+        activeTimelineFilters.delete('all');
+        document.querySelector('#timelineView .filter-button.all').classList.remove('active');
+        
+        // Toggle the clicked filter
+        if (activeTimelineFilters.has(type)) {
+          activeTimelineFilters.delete(type);
+          button.classList.remove('active');
+        } else {
+          activeTimelineFilters.add(type);
+          button.classList.add('active');
+        }
+        
+        // If no filters are active, activate 'all'
+        if (activeTimelineFilters.size === 0) {
+          activeTimelineFilters.add('all');
+          document.querySelector('#timelineView .filter-button.all').classList.add('active');
+        }
       }
       
-      localStorage.setItem('personalTimeline', JSON.stringify(personalTimeline));
-      // Synchronizuj stan przycisków i klas w głównym widoku
-      syncMainTimelineButtons();
-      if (document.getElementById('timelineView').classList.contains('active')) {
-        renderPersonalTimeline();
-      }
-    }
-
-    // Synchronizuj przyciski i klasy .selected w głównym widoku
-    function syncMainTimelineButtons() {
-      const sessions = document.querySelectorAll('.session');
-      sessions.forEach(session => {
-        const sessionId = session.getAttribute('data-session-id');
-        const button = session.querySelector('.add-to-timeline');
-        if (!button) return;
-        if (personalTimeline.includes(sessionId)) {
-          button.classList.add('selected');
-          button.textContent = 'Usuń z timeline';
-          session.classList.add('selected');
-        } else {
-          button.classList.remove('selected');
-          button.textContent = 'Dodaj do timeline';
-          session.classList.remove('selected');
-        }
-      });
+      renderPersonalTimeline();
     }
 
     // Function to render personal timeline
@@ -489,6 +594,17 @@
         timeDiv.innerHTML = `<h2>${time}</h2>`;
         
         sessionsByTime[time].forEach(session => {
+          // Apply timeline filters
+          if (activeTimelineFilters.has('all')) {
+            session.classList.remove('hidden');
+          } else {
+            const sessionTypes = Array.from(session.classList)
+              .filter(cls => ['IT', 'Unplugged', 'Panel', 'Networking'].includes(cls));
+            
+            const shouldShow = sessionTypes.some(type => activeTimelineFilters.has(type));
+            session.classList.toggle('hidden', !shouldShow);
+          }
+
           const button = session.querySelector('.add-to-timeline');
           if (button) {
             button.textContent = 'Usuń z timeline';
@@ -499,7 +615,63 @@
           timeDiv.appendChild(session);
         });
         
-        timelineContainer.appendChild(timeDiv);
+        // Only show tracks that have visible sessions
+        const visibleSessions = timeDiv.querySelectorAll('.session:not(.hidden)');
+        if (visibleSessions.length > 0) {
+          timelineContainer.appendChild(timeDiv);
+        }
+      });
+    }
+
+    // Function to toggle timeline view
+    function toggleTimeline() {
+      const timelineView = document.getElementById('timelineView');
+      timelineView.classList.toggle('active');
+      if (timelineView.classList.contains('active')) {
+        renderPersonalTimeline();
+      }
+    }
+
+    // Function to add/remove session from timeline
+    function toggleSession(sessionId, button) {
+      const session = document.querySelector(`[data-session-id="${sessionId}"]`);
+      const index = personalTimeline.indexOf(sessionId);
+      
+      if (index === -1) {
+        personalTimeline.push(sessionId);
+        button.classList.add('selected');
+        button.textContent = 'Usuń z timeline';
+        session.classList.add('selected');
+      } else {
+        personalTimeline.splice(index, 1);
+        button.classList.remove('selected');
+        button.textContent = 'Dodaj do timeline';
+        session.classList.remove('selected');
+      }
+      
+      localStorage.setItem('personalTimeline', JSON.stringify(personalTimeline));
+      syncMainTimelineButtons();
+      if (document.getElementById('timelineView').classList.contains('active')) {
+        renderPersonalTimeline();
+      }
+    }
+
+    // Synchronizuj przyciski i klasy .selected w głównym widoku
+    function syncMainTimelineButtons() {
+      const sessions = document.querySelectorAll('.session');
+      sessions.forEach(session => {
+        const sessionId = session.getAttribute('data-session-id');
+        const button = session.querySelector('.add-to-timeline');
+        if (!button) return;
+        if (personalTimeline.includes(sessionId)) {
+          button.classList.add('selected');
+          button.textContent = 'Usuń z timeline';
+          session.classList.add('selected');
+        } else {
+          button.classList.remove('selected');
+          button.textContent = 'Dodaj do timeline';
+          session.classList.remove('selected');
+        }
       });
     }
 
