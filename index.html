@@ -533,6 +533,66 @@
     let activeFilters = new Set(['all']);
     let activeTimelineFilters = new Set(['all']);
     
+    // Function to toggle main view filters
+    function toggleFilter(type) {
+      const button = document.querySelector(`.filter-button.${type}`);
+      
+      if (type === 'all') {
+        // Reset all filters
+        activeFilters.clear();
+        activeFilters.add('all');
+        document.querySelectorAll('.filter-button').forEach(btn => {
+          btn.classList.remove('active');
+        });
+        button.classList.add('active');
+      } else {
+        // Remove 'all' from active filters
+        activeFilters.delete('all');
+        document.querySelector('.filter-button.all').classList.remove('active');
+        
+        // Toggle the clicked filter
+        if (activeFilters.has(type)) {
+          activeFilters.delete(type);
+          button.classList.remove('active');
+        } else {
+          activeFilters.add(type);
+          button.classList.add('active');
+        }
+        
+        // If no filters are active, activate 'all'
+        if (activeFilters.size === 0) {
+          activeFilters.add('all');
+          document.querySelector('.filter-button.all').classList.add('active');
+        }
+      }
+      
+      filterMainSessions();
+    }
+    
+    // Function to filter main view sessions
+    function filterMainSessions() {
+      const sessions = document.querySelectorAll('.session');
+      const tracks = document.querySelectorAll('.track');
+      
+      sessions.forEach(session => {
+        if (activeFilters.has('all')) {
+          session.classList.remove('hidden');
+        } else {
+          const sessionTypes = Array.from(session.classList)
+            .filter(cls => ['IT', 'Unplugged', 'Panel', 'Networking'].includes(cls));
+          
+          const shouldShow = sessionTypes.some(type => activeFilters.has(type));
+          session.classList.toggle('hidden', !shouldShow);
+        }
+      });
+      
+      // Hide empty tracks
+      tracks.forEach(track => {
+        const visibleSessions = track.querySelectorAll('.session:not(.hidden)');
+        track.classList.toggle('hidden', visibleSessions.length === 0);
+      });
+    }
+
     // Function to toggle timeline filters
     function toggleTimelineFilter(type) {
       const button = document.querySelector(`#timelineView .filter-button.${type}`);
