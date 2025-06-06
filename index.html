@@ -701,7 +701,10 @@
           if (!sessionsByTime[time]) {
             sessionsByTime[time] = [];
           }
-          sessionsByTime[time].push(session.cloneNode(true));
+          // Clone the session and set the correct data-session-id
+          const clonedSession = session.cloneNode(true);
+          clonedSession.setAttribute('data-session-id', sessionId);
+          sessionsByTime[time].push(clonedSession);
         }
       });
 
@@ -723,13 +726,18 @@
             session.classList.toggle('hidden', !shouldShow);
           }
 
-          const button = session.querySelector('.add-to-timeline');
-          if (button) {
-            button.textContent = 'Usuń z timeline';
-            button.classList.add('selected');
+          // Remove all existing .add-to-timeline buttons from the cloned session
+          session.querySelectorAll('.add-to-timeline').forEach(btn => btn.remove());
+          // Add a single, correctly-wired 'Usuń z timeline' button
+          const removeBtn = document.createElement('button');
+          removeBtn.className = 'add-to-timeline selected';
+          removeBtn.textContent = 'Usuń z timeline';
+          removeBtn.onclick = function() {
             const sessionId = session.getAttribute('data-session-id');
-            button.onclick = () => toggleSession(sessionId, button);
-          }
+            toggleSession(sessionId, removeBtn);
+          };
+          session.appendChild(removeBtn);
+
           timeDiv.appendChild(session);
         });
         
@@ -752,18 +760,28 @@
 
     // Function to add/remove session from timeline
     function toggleSession(sessionId, button) {
+      // If button is passed directly (from click event)
+      if (button instanceof HTMLElement) {
+        const session = button.closest('.session');
+        sessionId = session.getAttribute('data-session-id');
+      }
+
       const session = document.querySelector(`[data-session-id="${sessionId}"]`);
       const index = personalTimeline.indexOf(sessionId);
       
       if (index === -1) {
         personalTimeline.push(sessionId);
-        button.classList.add('selected');
-        button.textContent = 'Usuń z timeline';
+        if (button) {
+          button.classList.add('selected');
+          button.textContent = 'Usuń z timeline';
+        }
         session.classList.add('selected');
       } else {
         personalTimeline.splice(index, 1);
-        button.classList.remove('selected');
-        button.textContent = 'Dodaj do timeline';
+        if (button) {
+          button.classList.remove('selected');
+          button.textContent = 'Dodaj do timeline';
+        }
         session.classList.remove('selected');
       }
       
@@ -800,6 +818,8 @@
         const sessionId = `session-${index}`;
         session.setAttribute('data-session-id', sessionId);
         
+        // Remove all existing .add-to-timeline buttons before adding a new one
+        session.querySelectorAll('.add-to-timeline').forEach(btn => btn.remove());
         const button = document.createElement('button');
         button.className = 'add-to-timeline';
         button.textContent = 'Dodaj do timeline';
